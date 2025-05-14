@@ -4,6 +4,11 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import javax.swing.table.DefaultTableModel;
+import utilidades.Encriptado;
+import static vistas.Login.datosPersonal;
+
 /**
  *
  * @author josavi
@@ -16,6 +21,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
     public ConsultaMedica(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
     }
 
     /**
@@ -41,7 +47,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         campoTelefono = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        camopEmail = new javax.swing.JTextField();
+        campoEmail = new javax.swing.JTextField();
         botonNuevoInforme = new javax.swing.JButton();
         botonNuevaCita = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -72,19 +78,33 @@ public class ConsultaMedica extends javax.swing.JDialog {
         jLabel3.setText("DNI PACIENTE");
 
         botonComprobarPaciente.setText("COMPROBAR PACIENTE");
+        botonComprobarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonComprobarPacienteActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(0, 204, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("PACIENTE"));
 
         jLabel5.setText("NOMBRE");
 
+        campoNombre.setEnabled(false);
+
         jLabel6.setText("APELLIDOS");
+
+        campoApellidos.setEnabled(false);
 
         jLabel7.setText("TELÉFONO");
 
+        campoTelefono.setEnabled(false);
+
         jLabel8.setText("EMAIL");
 
+        campoEmail.setEnabled(false);
+
         botonNuevoInforme.setText("Nuevo informe");
+        botonNuevoInforme.setEnabled(false);
         botonNuevoInforme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonNuevoInformeActionPerformed(evt);
@@ -92,6 +112,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
         });
 
         botonNuevaCita.setText("Nueva cita");
+        botonNuevaCita.setEnabled(false);
         botonNuevaCita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonNuevaCitaActionPerformed(evt);
@@ -120,7 +141,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
                         .addGap(52, 52, 52)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(camopEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(337, 337, 337)
                         .addComponent(botonNuevoInforme, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -140,7 +161,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
                     .addComponent(jLabel7)
                     .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(camopEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonNuevoInforme)
@@ -161,6 +182,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tabla);
 
         botonActualizarTabla.setText("ACTUALIZAR TABLA");
+        botonActualizarTabla.setEnabled(false);
         botonActualizarTabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonActualizarTablaActionPerformed(evt);
@@ -263,7 +285,7 @@ public class ConsultaMedica extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarTablaActionPerformed
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_botonActualizarTablaActionPerformed
 
@@ -272,11 +294,43 @@ public class ConsultaMedica extends javax.swing.JDialog {
     }//GEN-LAST:event_botonNuevaCitaActionPerformed
 
     private void botonNuevoInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoInformeActionPerformed
-        NuevoInformeMedico cm = new NuevoInformeMedico(this, rootPaneCheckingEnabled);
-        cm.setVisible(rootPaneCheckingEnabled);
+//        NuevoInformeMedico cm = new NuevoInformeMedico(this, rootPaneCheckingEnabled);
+//        cm.setVisible(rootPaneCheckingEnabled);
 
-      
+
     }//GEN-LAST:event_botonNuevoInformeActionPerformed
+
+    private void botonComprobarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonComprobarPacienteActionPerformed
+
+        if (Conexion.existePaciente(Encriptado.encriptar(campoDniPaciente.toString()))) {
+
+            datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(campoDniPaciente.toString()));
+            campoNombre.setText(datosPaciente[0]);
+            campoApellidos.setText(datosPaciente[1]);
+            campoTelefono.setText(datosPaciente[2]);
+            campoEmail.setText(datosPaciente[3]);
+            botonNuevoInforme.setEnabled(true);
+            botonNuevaCita.setEnabled(true);
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
+            
+            Conexion.Conectar();
+            Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
+            Conexion.desconectar();
+
+        }
+
+//        if (!existePaciente) {
+//
+//            campoNombre.setEnabled(true);
+//            campoApellidos.setEnabled(true);
+//            campoTelefono.setEnabled(true);
+//            campoEmail.setEnabled(true);
+//
+//        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonComprobarPacienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,9 +379,9 @@ public class ConsultaMedica extends javax.swing.JDialog {
     private javax.swing.JButton botonComprobarPaciente;
     private javax.swing.JButton botonNuevaCita;
     private javax.swing.JButton botonNuevoInforme;
-    private javax.swing.JTextField camopEmail;
     private javax.swing.JTextField campoApellidos;
     private javax.swing.JTextField campoDniPaciente;
+    private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoTelefono;
     private javax.swing.JLabel jLabel1;
@@ -346,4 +400,6 @@ public class ConsultaMedica extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+    public static String[] datosPaciente;
+
 }

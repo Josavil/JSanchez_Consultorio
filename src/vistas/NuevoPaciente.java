@@ -4,6 +4,9 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import static vistas.Login.dniPaciente;
+
 /**
  *
  * @author josavi
@@ -16,6 +19,14 @@ public class NuevoPaciente extends javax.swing.JDialog {
     public NuevoPaciente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        //campoDni.setText(dniPaciente);
+        Conexion.Conectar();
+        Conexion.cargaComboCP(comboCodigoPostal);
+        Conexion.desconectar();
+        
+        
+        
+        
     }
 
     /**
@@ -119,6 +130,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
         jLabel11.setText("TABAQUISMO");
 
         jLabel12.setText("CONSUMO DE ALCOHOL");
+
+        campoDni.setEnabled(false);
 
         comboCodigoPostal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
 

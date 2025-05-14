@@ -4,7 +4,10 @@
  */
 package vistas;
 
+import bbdd.Conexion;
 import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import static vistas.Login.datosPersonal;
 
 /**
  *
@@ -17,9 +20,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        String hoy = Long.toString(new Date().getTime());
 
-//        Date hoy = new Date();
-//        labelFecha.setText(new Date.toString);
+        labelFecha.setText(hoy);
+        labelNombreApellidos.setText(datosPersonal[0]);
+        labelDatosUsuario.setText(datosPersonal[1]);
+        
+        if ("MEDICO".equals(datosPersonal[2])) {
+            botonConsultas.setEnabled(true);
+            botonPacientes.setEnabled(true);
+            labelAgenda.setText("Agenda de citas médicas");
+            Conexion.Conectar();
+            Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
+            Conexion.desconectar();
+        }
+        if ("ENFERMERIA".equals(datosPersonal[2])) {
+            botonEnfermeria.setEnabled(true);
+            labelAgenda.setText("Agenda de citas enfermería");
+            Conexion.Conectar();
+            Conexion.tablaAgendaCitasEnfermeria(modelo, datosPersonal[1]);
+            Conexion.desconectar();
+        }
+
+        if ("ADMIN".equals(datosPersonal[2])) {
+            botonPersonalMedico.setEnabled(true);
+            labelAgenda.setText("Cómo administrador no tienes acceso a las agendas.");
+        }
+
     }
 
     /**
@@ -36,7 +64,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
+        labelAgenda = new javax.swing.JLabel();
         botonConsultas = new javax.swing.JButton();
         botonPacientes = new javax.swing.JButton();
         botonEnfermeria = new javax.swing.JButton();
@@ -47,6 +75,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         labelDatosUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -64,9 +93,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tabla);
 
-        jLabel3.setText("AGENDA DE CITAS MÉDICAS o lo que sea asegun el tipo de usuario XXXXXXXXXXXXXXXXXX");
+        labelAgenda.setText("AGENDA DE CITAS MÉDICAS o lo que sea asegun el tipo de usuario");
 
         botonConsultas.setText("CONSULTAS");
+        botonConsultas.setEnabled(false);
         botonConsultas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonConsultasActionPerformed(evt);
@@ -74,6 +104,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
 
         botonPacientes.setText("PACIENTES");
+        botonPacientes.setEnabled(false);
         botonPacientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonPacientesActionPerformed(evt);
@@ -81,6 +112,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
 
         botonEnfermeria.setText("ENFERMERÍA");
+        botonEnfermeria.setEnabled(false);
         botonEnfermeria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonEnfermeriaActionPerformed(evt);
@@ -88,6 +120,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
 
         botonPersonalMedico.setText("PERSONAL MÉDICO");
+        botonPersonalMedico.setEnabled(false);
         botonPersonalMedico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonPersonalMedicoActionPerformed(evt);
@@ -118,7 +151,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addComponent(botonPersonalMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
-                                .addComponent(jLabel3)))
+                                .addComponent(labelAgenda)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel4Layout.setVerticalGroup(
@@ -131,7 +164,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                     .addComponent(botonEnfermeria, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botonPersonalMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
-                .addComponent(jLabel3)
+                .addComponent(labelAgenda)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
@@ -257,10 +290,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonPersonalMedico;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelAgenda;
     private javax.swing.JLabel labelDatosUsuario;
     private javax.swing.JLabel labelFecha;
     private javax.swing.JLabel labelNombreApellidos;

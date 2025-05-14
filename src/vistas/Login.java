@@ -6,7 +6,9 @@ package vistas;
 
 import bbdd.Conexion;
 import javax.swing.JOptionPane;
+import modelo.Personal;
 import utilidades.Encriptado;
+import java.lang.String;
 
 /**
  *
@@ -39,6 +41,7 @@ public class Login extends javax.swing.JFrame {
         botonEntrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/hospitalLogin.png"))); // NOI18N
 
@@ -81,7 +84,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(114, 114, 114)
                         .addComponent(botonEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,11 +115,14 @@ public class Login extends javax.swing.JFrame {
 
         String password = new String(campoContrasenya.getPassword());
         String pas = Encriptado.encriptar(password);
+
         if (Conexion.acceder(usu, pas)) {
+            datosPersonal = bbdd.Conexion.recuperaDatosUserLogado(usu);
+            
             MenuPrincipal p = new MenuPrincipal();
             p.setVisible(true);
             this.dispose();
-                    Conexion.desconectar();
+            Conexion.desconectar();
 
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o Contraseña incorrecto, inténtelo de nuevo.");
@@ -124,7 +130,7 @@ public class Login extends javax.swing.JFrame {
             campoContrasenya.setText("");
         }
         Conexion.desconectar();
-        
+
     }//GEN-LAST:event_botonEntrarActionPerformed
 
     /**
@@ -173,10 +179,9 @@ public class Login extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     //ESTO FALTAN POR PONER COSICAS
-public static String[] datosPersonal;
-
-
-
-
+    
+    public static String[] datosPersonal;
+    public static String dniPaciente;
+    
 
 }

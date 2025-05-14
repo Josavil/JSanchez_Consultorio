@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+import utilidades.Encriptado;
 
 /**
  * En esta clase incluiremos todos los métodos para interactuar con la base de
@@ -94,36 +96,178 @@ public class Conexion {
      * @param user
      * @return
      */
-public static String[] recuperaDatosUserLogado(String user) {
-    String consulta = "SELECT CONCAT(nombre, ' ', apellidos) as nombre_completo, numero_colegiado FROM personal WHERE usuario=?";
-    PreparedStatement pst;
-    ResultSet rs;
-    String[] userData = new String[2];
-    
-    try {
-        pst = (PreparedStatement) conn.prepareStatement(consulta);
-        pst.setString(1, user);  
-        rs = pst.executeQuery();
-        
-        if (rs.next()) {
-            userData[0] = rs.getString("nombre_completo");  
-            userData[1] = rs.getString("numero_colegiado"); 
-        } else {
+    public static String[] recuperaDatosUserLogado(String user) {
+        String consulta = "SELECT CONCAT(nombre, ' ', apellidos) as nombre_completo, numero_colegiado, tipo AS TIPO FROM personal WHERE usuario=?";
+        PreparedStatement pst;
+        ResultSet rs;
+        String[] userData = new String[3];
+
+        try {
+            pst = (PreparedStatement) conn.prepareStatement(consulta);
+            pst.setString(1, user);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                userData[0] = rs.getString("nombre_completo");
+                userData[1] = rs.getString("numero_colegiado");
+                userData[2] = rs.getString("TIPO");
+            } else {
+                userData[0] = "";
+                userData[1] = "";
+                userData[2] = "";
+            }
+
+            rs.close();
+            pst.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
             userData[0] = "";
             userData[1] = "";
+            userData[2] = "";
         }
-        
-        rs.close();
-        pst.close();
-        
-    } catch (SQLException ex) {
-        Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        userData[0] = "";
-        userData[1] = "";
+
+        return userData;  // Return the array regardless of what happened
     }
-    
-    return userData;  // Return the array regardless of what happened
-}
+
+// debe mostrar Nombre dia y hora
+    public static void tablaAgendaCitasMedico(DefaultTableModel modelo, String numeroProfesional) {
+        Object[] datos = new Object[3];
+
+        String consulta = "SELECT citas.nombre, citas.dia, citas.hora "
+                + "FROM paciente "
+                + "JOIN citas ON citas.dniPaciente = paciente.dni "
+                + "JOIN consultas ON paciente.dni = consultas.dniPaciente "
+                + "JOIN personal ON consultas.codigofacultativo = personal.numero_colegiado "
+                + "WHERE personal.tipo = 'MEDICO' "
+                + "AND citas.dia = CURDATE() "
+                + "AND personal.numero_colegiado = ?;";
+
+        try {
+            PreparedStatement pst;
+            ResultSet rs;
+
+            pst = conn.prepareStatement(consulta);
+            pst.setString(1, numeroProfesional);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                datos[0] = Encriptado.desencriptar(rs.getString("NOMBRE"));
+                datos[1] = rs.getString("DIA");
+                datos[2] = rs.getString("HORA");
+
+                modelo.addRow(datos);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void tablaAgendaCitasEnfermeria(DefaultTableModel modelo, String numeroProfesional) {
+        Object[] datos = new Object[3];
+
+        String consulta = "SELECT citasEnfermeria.nombre, citasEnfermeria.dia, citasEnfermeria.hora "
+                + "FROM paciente "
+                + "JOIN citasEnfermeria ON citasEnfermeria.dniPaciente = paciente.dni "
+                + "JOIN consultas ON paciente.dni = consultas.dniPaciente "
+                + "JOIN personal ON consultas.codigofacultativo = personal.numero_colegiado "
+                + "WHERE personal.tipo = 'MEDICO' "
+                + "AND citasEnfermeria.dia = CURDATE() "
+                + "AND personal.numero_colegiado = ?;";
+
+        try {
+            PreparedStatement pst;
+            ResultSet rs;
+
+            pst = conn.prepareStatement(consulta);
+            pst.setString(1, numeroProfesional);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                datos[0] = Encriptado.desencriptar(rs.getString("NOMBRE"));
+                datos[1] = rs.getString("DIA");
+                datos[2] = rs.getString("HORA");
+
+                modelo.addRow(datos);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static boolean existePaciente(String dnipac) {
+
+        try {
+            String consulta = "SELECT * "
+                    + "FROM paciente "
+                    + "WHERE dni = ?";
+            java.sql.PreparedStatement pst = conn.prepareStatement(consulta);
+            pst.setString(1, dnipac);
+            ResultSet rs = pst.executeQuery();
+
+            return rs.next(); // Si existe devuelve TRue
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static String[] conseguirDatosPaciente(String dnipac) {
+        String consulta = "SELECT paciente.nombre AS NOMBRE, paciente.apellidos AS APELLIDOS, paciente.telefono AS TELEFONO, paciente.email AS EMAIL "
+                + "FROM paciente "
+                + "WHERE dni = ?";
+        PreparedStatement pst;
+        ResultSet rs;
+        String[] userData = new String[4];
+
+        try {
+            pst = (PreparedStatement) conn.prepareStatement(consulta);
+            pst.setString(1, dnipac);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                userData[0] = rs.getString("NOMBRE");
+                userData[1] = rs.getString("APELLIDOS");
+                userData[2] = rs.getString("TELEFONO");
+                userData[3] = rs.getString("EMAIL");
+            } else {
+                userData[0] = "";
+                userData[1] = "";
+                userData[2] = "";
+                userData[3] = "";
+            }
+
+            rs.close();
+            pst.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            userData[0] = "";
+            userData[1] = "";
+            userData[2] = "";
+            userData[3] = "";
+        }
+
+        return userData;  // Return the array regardless of what happened
+    }
+
+    public static void cargaComboCP(JComboBox combo) {
+
+        try {
+            String SSQL = "SELECT DISTINCT codigospostales.codigopostal AS CP "
+                    + "FROM codigospostales ";
+
+            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+
+            while (rs.next()) {
+                combo.addItem(rs.getString("CP"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
 //    public static String nombresito(String user, String pass) {
 //
@@ -148,37 +292,7 @@ public static String[] recuperaDatosUserLogado(String user) {
 //        return null;
 //    }
 //
-//    public static boolean existeUsuario(String usu) {
 //
-//        try {
-//            String consulta = "SELECT * FROM empleados WHERE usuario = ?";
-//            java.sql.PreparedStatement pst = conn.prepareStatement(consulta);
-//            pst.setString(1, usu);
-//            ResultSet rs = pst.executeQuery();
-//
-//            return rs.next(); // Si existe devuelve TRue
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return false;
-//    }
-//
-//    public static void cargaComboTurno(JComboBox combo) {
-//
-//        try {
-//            String SSQL = "SELECT DISTINCT turno AS TURNO FROM empleados";
-//
-//            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
-//            ResultSet rs = st.executeQuery(SSQL);
-//
-//            while (rs.next()) {
-//                combo.addItem(rs.getString("TURNO"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
 //
 //    public static void cargaComboAnioSalon(JComboBox combo) {
 //

@@ -136,6 +136,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="COMPROBAR PACIENTE"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonComprobarPacienteActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel3">
           <Properties>
@@ -170,7 +173,7 @@
                               <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="camopEmail" min="-2" pref="182" max="-2" attributes="0"/>
+                              <Component id="campoEmail" min="-2" pref="182" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="337" max="-2" attributes="0"/>
@@ -195,7 +198,7 @@
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="campoTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="camopEmail" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="campoEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="59" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -214,6 +217,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoNombre">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
               <Properties>
@@ -221,6 +227,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoApellidos">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
@@ -228,17 +237,24 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoTelefono">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
                 <Property name="text" type="java.lang.String" value="EMAIL"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="camopEmail">
+            <Component class="javax.swing.JTextField" name="campoEmail">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="botonNuevoInforme">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nuevo informe"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonNuevoInformeActionPerformed"/>
@@ -247,6 +263,7 @@
             <Component class="javax.swing.JButton" name="botonNuevaCita">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nueva cita"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonNuevaCitaActionPerformed"/>
@@ -283,6 +300,7 @@
         <Component class="javax.swing.JButton" name="botonActualizarTabla">
           <Properties>
             <Property name="text" type="java.lang.String" value="ACTUALIZAR TABLA"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonActualizarTablaActionPerformed"/>

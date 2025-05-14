@@ -108,13 +108,22 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
 
         jLabel5.setText("NOMBRE");
 
+        campoNombre.setEnabled(false);
+
         jLabel6.setText("APELLIDOS");
+
+        campoApellidos.setEnabled(false);
 
         jLabel7.setText("TELÉFONO");
 
+        campoTelefono.setEnabled(false);
+
         jLabel8.setText("EMAIL");
 
+        camopEmail.setEnabled(false);
+
         botonNuevoInforme.setText("Nuevo informe");
+        botonNuevoInforme.setEnabled(false);
         botonNuevoInforme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonNuevoInformeActionPerformed(evt);
@@ -122,6 +131,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         });
 
         botonNuevaCita.setText("Nueva cita");
+        botonNuevaCita.setEnabled(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -186,6 +196,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tabla);
 
         botonActualizarTabla.setText("ACTUALIZAR TABLA");
+        botonActualizarTabla.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -257,8 +268,8 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
 
     private void botonNuevoInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoInformeActionPerformed
 
-        NuevoInformeEnfermeria cma = new NuevoInformeEnfermeria(this, rootPaneCheckingEnabled);
-        cma.setVisible(rootPaneCheckingEnabled);
+//        NuevoInformeEnfermeria cma = new NuevoInformeEnfermeria(this, rootPaneCheckingEnabled);
+//        cma.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_botonNuevoInformeActionPerformed
 
     /**
