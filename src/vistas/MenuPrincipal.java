@@ -20,17 +20,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
      */
     public MenuPrincipal() {
         initComponents();
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        String hoy = Long.toString(new Date().getTime());
 
-        labelFecha.setText(hoy);
+        labelFecha.setText(hoy.toString());
         labelNombreApellidos.setText(datosPersonal[0]);
         labelDatosUsuario.setText(datosPersonal[1]);
-        
+
         if ("MEDICO".equals(datosPersonal[2])) {
             botonConsultas.setEnabled(true);
             botonPacientes.setEnabled(true);
             labelAgenda.setText("Agenda de citas médicas");
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
             Conexion.Conectar();
             Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
             Conexion.desconectar();
@@ -38,6 +37,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
         if ("ENFERMERIA".equals(datosPersonal[2])) {
             botonEnfermeria.setEnabled(true);
             labelAgenda.setText("Agenda de citas enfermería");
+            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
             Conexion.Conectar();
             Conexion.tablaAgendaCitasEnfermeria(modelo, datosPersonal[1]);
             Conexion.desconectar();
@@ -299,4 +300,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel labelNombreApellidos;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+
+    public static Date hoy = new Date();
+
 }

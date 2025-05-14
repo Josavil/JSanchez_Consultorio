@@ -9,10 +9,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
+import modelo.Paciente;
 import utilidades.Encriptado;
 
 /**
@@ -139,8 +141,7 @@ public class Conexion {
                 + "JOIN citas ON citas.dniPaciente = paciente.dni "
                 + "JOIN consultas ON paciente.dni = consultas.dniPaciente "
                 + "JOIN personal ON consultas.codigofacultativo = personal.numero_colegiado "
-                + "WHERE personal.tipo = 'MEDICO' "
-                + "AND citas.dia = CURDATE() "
+                + "WHERE citas.dia = CURDATE() "
                 + "AND personal.numero_colegiado = ?;";
 
         try {
@@ -166,7 +167,7 @@ public class Conexion {
     public static void tablaAgendaCitasEnfermeria(DefaultTableModel modelo, String numeroProfesional) {
         Object[] datos = new Object[3];
 
-        String consulta = "SELECT citasEnfermeria.nombre, citasEnfermeria.dia, citasEnfermeria.hora "
+        String consulta = "SELECT citasEnfermeria.nombre AS NOMBRE, citasEnfermeria.dia AS DIA, citasEnfermeria.hora AS HORA "
                 + "FROM paciente "
                 + "JOIN citasEnfermeria ON citasEnfermeria.dniPaciente = paciente.dni "
                 + "JOIN consultas ON paciente.dni = consultas.dniPaciente "
@@ -267,6 +268,40 @@ public class Conexion {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public static boolean registrarPaciente(Paciente p) {
+        try {
+            String consulta = "INSERT INTO paciente (dni, nombre, apellidos,"
+                    + " fechaNacimiento, telefono, email, cp, sexo, tabaquismo,"
+                    + " consumoAlcohol, antecedentesSalud, datosSaludGeneral, fechaRegistro) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);"; //son 13
+            
+            PreparedStatement st;
+            
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+            
+            st.setObject(1, p.getDni());
+            st.setObject(2, p.getNombre());
+            st.setObject(3, p.getApellidos());
+            st.setObject(4, p.getFechaNacimiento());
+            st.setObject(5, p.getTelefono());
+            st.setObject(6, p.getEmail());
+            st.setObject(7, p.getCp());
+            st.setObject(8, p.getSexo());
+            st.setObject(9, p.getTabaquismo());
+            st.setObject(10, p.getConsumocalcohol());
+            st.setObject(11, p.getAntecedentesSalud());
+            st.setObject(12, p.getDatosSaludGeneral());
+            st.setObject(13, p.getFechaRegistro());
+            
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 //    public static String nombresito(String user, String pass) {

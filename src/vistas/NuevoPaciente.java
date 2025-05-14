@@ -5,7 +5,13 @@
 package vistas;
 
 import bbdd.Conexion;
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import modelo.Paciente;
+import java.sql.Date;
+import utilidades.Encriptado;
 import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
 
 /**
  *
@@ -20,13 +26,11 @@ public class NuevoPaciente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         //campoDni.setText(dniPaciente);
+
         Conexion.Conectar();
         Conexion.cargaComboCP(comboCodigoPostal);
         Conexion.desconectar();
-        
-        
-        
-        
+
     }
 
     /**
@@ -45,7 +49,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
         buttonGroupAlcohol = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         botonRegistrar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        panelCampos = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -63,15 +67,15 @@ public class NuevoPaciente extends javax.swing.JDialog {
         campoTelefono = new javax.swing.JTextField();
         campoEmail = new javax.swing.JTextField();
         comboCodigoPostal = new javax.swing.JComboBox<>();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
-        jRadioButton9 = new javax.swing.JRadioButton();
-        jPanel4 = new javax.swing.JPanel();
+        radioMujer = new javax.swing.JRadioButton();
+        radioHombre = new javax.swing.JRadioButton();
+        radioOtros = new javax.swing.JRadioButton();
+        radioNulo = new javax.swing.JRadioButton();
+        radioOcasional = new javax.swing.JRadioButton();
+        radioHabitual = new javax.swing.JRadioButton();
+        radioNo = new javax.swing.JRadioButton();
+        radioSi = new javax.swing.JRadioButton();
+        panelAreas = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         campoAntecedente = new javax.swing.JTextArea();
@@ -108,8 +112,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
             }
         });
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos personales"));
-        jPanel3.setOpaque(false);
+        panelCampos.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos personales"));
+        panelCampos.setOpaque(false);
 
         jLabel3.setText("NOMBRE");
 
@@ -135,141 +139,141 @@ public class NuevoPaciente extends javax.swing.JDialog {
 
         comboCodigoPostal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
 
-        buttonGroupSexo.add(jRadioButton1);
-        jRadioButton1.setText("Mujer");
+        buttonGroupSexo.add(radioMujer);
+        radioMujer.setText("Mujer");
 
-        buttonGroupSexo.add(jRadioButton2);
-        jRadioButton2.setText("HOMBRE");
+        buttonGroupSexo.add(radioHombre);
+        radioHombre.setText("HOMBRE");
 
-        buttonGroupSexo.add(jRadioButton3);
-        jRadioButton3.setText("OTROS");
+        buttonGroupSexo.add(radioOtros);
+        radioOtros.setText("OTROS");
 
-        buttonGroupAlcohol.add(jRadioButton4);
-        jRadioButton4.setText("NULO");
+        buttonGroupAlcohol.add(radioNulo);
+        radioNulo.setText("NULO");
 
-        buttonGroupAlcohol.add(jRadioButton5);
-        jRadioButton5.setText("OCASIONAL");
+        buttonGroupAlcohol.add(radioOcasional);
+        radioOcasional.setText("OCASIONAL");
 
-        buttonGroupAlcohol.add(jRadioButton6);
-        jRadioButton6.setText("HABITUAL");
+        buttonGroupAlcohol.add(radioHabitual);
+        radioHabitual.setText("HABITUAL");
 
-        buttonGroupTabaquismo.add(jRadioButton7);
-        jRadioButton7.setText("NO");
+        buttonGroupTabaquismo.add(radioNo);
+        radioNo.setText("NO");
 
-        buttonGroupTabaquismo.add(jRadioButton9);
-        jRadioButton9.setText("SI");
+        buttonGroupTabaquismo.add(radioSi);
+        radioSi.setText("SI");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelCamposLayout = new javax.swing.GroupLayout(panelCampos);
+        panelCampos.setLayout(panelCamposLayout);
+        panelCamposLayout.setHorizontalGroup(
+            panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCamposLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCamposLayout.createSequentialGroup()
+                        .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)
                             .addComponent(jLabel12)
                             .addComponent(jLabel11))
                         .addGap(48, 48, 48)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jRadioButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(panelCamposLayout.createSequentialGroup()
+                                    .addComponent(radioNo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jRadioButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jRadioButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioSi, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panelCamposLayout.createSequentialGroup()
+                                    .addComponent(radioOcasional, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jRadioButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioHabitual, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jRadioButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioNulo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panelCamposLayout.createSequentialGroup()
+                                    .addComponent(radioMujer, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(radioHombre, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jRadioButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(radioOtros, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panelCamposLayout.createSequentialGroup()
                                     .addComponent(campoEmail)
                                     .addGap(60, 60, 60)))
                             .addComponent(comboCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelCamposLayout.createSequentialGroup()
                             .addComponent(jLabel7)
                             .addGap(134, 134, 134)
                             .addComponent(campoTelefono))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelCamposLayout.createSequentialGroup()
+                            .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel3)
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel6))
                             .addGap(52, 52, 52)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(campoApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                                 .addComponent(campoNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                                 .addComponent(campoDni)
                                 .addComponent(dateFechaNacimiento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelCamposLayout.setVerticalGroup(
+            panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCamposLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelCamposLayout.createSequentialGroup()
+                        .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(campoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6))
                     .addComponent(dateFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(comboCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3))
+                    .addComponent(radioMujer)
+                    .addComponent(radioHombre)
+                    .addComponent(radioOtros))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jRadioButton7)
-                    .addComponent(jRadioButton9))
+                    .addComponent(radioNo)
+                    .addComponent(radioSi))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton6)
-                    .addComponent(jRadioButton4))
+                    .addComponent(radioOcasional)
+                    .addComponent(radioHabitual)
+                    .addComponent(radioNulo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Salud"));
-        jPanel4.setOpaque(false);
-        jPanel4.setRequestFocusEnabled(false);
+        panelAreas.setBorder(javax.swing.BorderFactory.createTitledBorder("Salud"));
+        panelAreas.setOpaque(false);
+        panelAreas.setRequestFocusEnabled(false);
 
         jLabel13.setText("ANTECEDENTES FAMILIARES DESTACABLES");
 
@@ -283,22 +287,22 @@ public class NuevoPaciente extends javax.swing.JDialog {
         campoPersonalAlerg.setRows(5);
         jScrollPane3.setViewportView(campoPersonalAlerg);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelAreasLayout = new javax.swing.GroupLayout(panelAreas);
+        panelAreas.setLayout(panelAreasLayout);
+        panelAreasLayout.setHorizontalGroup(
+            panelAreasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAreasLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelAreasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        panelAreasLayout.setVerticalGroup(
+            panelAreasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAreasLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
@@ -316,9 +320,9 @@ public class NuevoPaciente extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelAreas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -330,8 +334,8 @@ public class NuevoPaciente extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelCampos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelAreas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonRegistrar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -387,7 +391,112 @@ public class NuevoPaciente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarActionPerformed
-        // TODO add your handling code here:
+
+// Tiene que:
+//Primero Validamos todos los campos para que no esten vacios.
+// A parte de lo normal, hay que validar los radioBotons. 
+// Fecha de nacimiento tiene que ser anterior a hoy
+// Telefono debe ser 9 valores numéricos
+// email debe tener formato email
+// 
+// Una vez validados, tenemos que coger y encriptar Dni, nombre y apellidos.
+// 
+//Crearemos entonces un Paciente con los siguientes valores conseguidos
+// 
+// Enviaremos con una consulta en conexion estos valores a la base de datos
+//
+//Registrado el paciente deberá anunciarse el resultado con mensaje específico y se cerrará la ventana: “Paciente registrado correctamente”.
+// En caso de error en el registro se emitirá el mensaje correspondiente: “Error en el registro del 
+//paciente. Inténtelo más tarde o póngase en contacto con el administrador del sistema”.
+//
+        boolean comprobaciones = true;
+
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupSexo)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupAlcohol)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupTabaquismo)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelCampos)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelAreas)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.validarDNI(dniPaciente)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.validarEmail(campoEmail.getText())) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono)) {
+            comprobaciones = false;
+        }
+        if (!dateFechaNacimiento.getDate().before(hoy)) {
+            JOptionPane.showMessageDialog(this, "La fecha de nacimiento debe ser congruente.");
+            comprobaciones = false;
+
+        }
+        String sexo = "H";
+        String tabaco = "";
+        String alcohol = "Ocasional";
+        if (radioMujer.isSelected()) {
+            sexo = "M";
+        } else if (radioHombre.isSelected()) {
+            sexo = "H";
+
+        } else if (radioOtros.isSelected()) {
+            sexo = "OTROS";
+        }
+
+        if (radioSi.isSelected()) {
+            tabaco = "SI";
+        } else if (radioNo.isSelected()) {
+            tabaco = "NO";
+        }
+
+        if (radioOcasional.isSelected()) {
+            alcohol = "Ocasional";
+        } else if (radioHabitual.isSelected()) {
+            alcohol = "Habitual";
+
+        } else if (radioNulo.isSelected()) {
+            alcohol = "Nulo";
+        }
+
+        if (comprobaciones = true) {
+
+            String dni = Encriptado.encriptar(dniPaciente);
+            String nom = Encriptado.encriptar(campoNombre.getText());
+            String ape = Encriptado.encriptar(campoApellidos.getText());
+            Date fec = (Date) dateFechaNacimiento.getDate();
+            int tel = Integer.parseInt(campoTelefono.getText());
+            String ema = campoEmail.getText();
+            int cp = (int) comboCodigoPostal.getSelectedItem();
+            String sex = sexo;
+            String tab = tabaco;
+            String alc = alcohol;
+            String antSal = campoAntecedente.getText();
+            String datAle = campoPersonalAlerg.getText();
+            Date fechoy = (Date) hoy;
+
+            Paciente p = new Paciente(dni, nom, ape, fec, tel, ema, cp, sex, tab, alc, antSal, datAle, fechoy);
+            Conexion.Conectar();
+
+            if (bbdd.Conexion.registrarPaciente(p)) {
+                JOptionPane.showMessageDialog(this, "Paciente registrado correctamente");
+                Conexion.desconectar();
+                utilidades.Utilidades.reseteaFormulario(panelAreas);
+                utilidades.Utilidades.reseteaFormulario(panelCampos);
+
+            } else {
+                Conexion.desconectar();
+                JOptionPane.showMessageDialog(this, "Error en el registro, intentelo de nuevo.");
+            }
+        }
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     /**
@@ -465,19 +574,19 @@ public class NuevoPaciente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panelAreas;
+    private javax.swing.JPanel panelCampos;
+    private javax.swing.JRadioButton radioHabitual;
+    private javax.swing.JRadioButton radioHombre;
+    private javax.swing.JRadioButton radioMujer;
+    private javax.swing.JRadioButton radioNo;
+    private javax.swing.JRadioButton radioNulo;
+    private javax.swing.JRadioButton radioOcasional;
+    private javax.swing.JRadioButton radioOtros;
+    private javax.swing.JRadioButton radioSi;
     // End of variables declaration//GEN-END:variables
 }
