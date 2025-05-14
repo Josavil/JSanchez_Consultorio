@@ -15,7 +15,9 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import modelo.Paciente;
+import modelo.Personal;
 import utilidades.Encriptado;
+import vistas.PersonalMedico;
 
 /**
  * En esta clase incluiremos todos los métodos para interactuar con la base de
@@ -213,6 +215,38 @@ public class Conexion {
         return false;
     }
 
+    public static boolean existeUsuario(String usu) {
+
+        try {
+            String consulta = "SELECT * "
+                    + "FROM personal "
+                    + "WHERE usuario = ?";
+            java.sql.PreparedStatement pst = conn.prepareStatement(consulta);
+            pst.setString(1, usu);
+            ResultSet rs = pst.executeQuery();
+
+            return rs.next(); // Si existe devuelve TRue
+        } catch (SQLException ex) {
+        }
+        return false;
+    }
+
+    public static boolean existeNumeroColegiado(String numcol) {
+
+        try {
+            String consulta = "SELECT * "
+                    + "FROM personal "
+                    + "WHERE numero_colegiado = ?";
+            java.sql.PreparedStatement pst = conn.prepareStatement(consulta);
+            pst.setString(1, numcol);
+            ResultSet rs = pst.executeQuery();
+
+            return rs.next(); // Si existe devuelve TRue
+        } catch (SQLException ex) {
+        }
+        return false;
+    }
+
     public static String[] conseguirDatosPaciente(String dnipac) {
         String consulta = "SELECT paciente.nombre AS NOMBRE, paciente.apellidos AS APELLIDOS, paciente.telefono AS TELEFONO, paciente.email AS EMAIL "
                 + "FROM paciente "
@@ -270,17 +304,35 @@ public class Conexion {
 
     }
 
+    public static void cargaComboTipo(JComboBox combo) {
+
+        try {
+            String SSQL = "SELECT DISTINCT personal.tipo AS TIPOS "
+                    + "FROM personal ";
+
+            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+
+            while (rs.next()) {
+                combo.addItem(rs.getString("TIPOS"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public static boolean registrarPaciente(Paciente p) {
         try {
             String consulta = "INSERT INTO paciente (dni, nombre, apellidos,"
                     + " fechaNacimiento, telefono, email, cp, sexo, tabaquismo,"
                     + " consumoAlcohol, antecedentesSalud, datosSaludGeneral, fechaRegistro) "
                     + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?);"; //son 13
-            
+
             PreparedStatement st;
-            
+
             st = (PreparedStatement) conn.prepareStatement(consulta);
-            
+
             st.setObject(1, p.getDni());
             st.setObject(2, p.getNombre());
             st.setObject(3, p.getApellidos());
@@ -294,7 +346,34 @@ public class Conexion {
             st.setObject(11, p.getAntecedentesSalud());
             st.setObject(12, p.getDatosSaludGeneral());
             st.setObject(13, p.getFechaRegistro());
-            
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean registrarPersonal(Personal pp) {
+        try {
+            String consulta = "INSERT INTO personal (numero_colegiado, nombre, apellidos,"
+                    + " telefono, usuario, contrasenya, tipo) "
+                    + "VALUES (?,?,?,?,?,?,?);"; //son 7
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, pp.getNumero_colegiado());
+            st.setObject(2, pp.getNombre());
+            st.setObject(3, pp.getApellidos());
+            st.setObject(4, pp.getTelefono());
+            st.setObject(5, pp.getUsuario());
+            st.setObject(6, pp.getContrasenya());
+            st.setObject(7, pp.getTipo());
+
             st.execute();
             return true;
 

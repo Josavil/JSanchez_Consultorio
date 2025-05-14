@@ -319,17 +319,33 @@
             <Component class="javax.swing.JTextField" name="campoDni">
               <Properties>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="name" type="java.lang.String" value="DNI" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoNombre">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="NOMBRE" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoApellidos">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="APELLIDOS" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="com.toedter.calendar.JDateChooser" name="dateFechaNacimiento">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="FECHA DE NACIMIENTO" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoTelefono">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="TEL&#xc9;FONO" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoEmail">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="EMAIL" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="comboCodigoPostal">
               <Properties>
@@ -338,6 +354,7 @@
                     <StringItem index="0" value="Seleccione"/>
                   </StringArray>
                 </Property>
+                <Property name="name" type="java.lang.String" value="C&#xd3;DIGO POSTAL" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -468,6 +485,7 @@
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
+                    <Property name="name" type="java.lang.String" value="ANTECEDENTES FAMILIARES" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -488,6 +506,7 @@
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
+                    <Property name="name" type="java.lang.String" value="DATOS PERSONALES" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>

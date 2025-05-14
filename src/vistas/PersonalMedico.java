@@ -4,6 +4,16 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import java.sql.Date;
+import javax.swing.JOptionPane;
+import modelo.Paciente;
+import modelo.Personal;
+import utilidades.Encriptado;
+import utilidades.Utilidades;
+import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
+
 /**
  *
  * @author josavi
@@ -16,6 +26,10 @@ public class PersonalMedico extends javax.swing.JDialog {
     public PersonalMedico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+        Conexion.Conectar();
+        Conexion.cargaComboTipo(comboTipo);
+        Conexion.desconectar();
     }
 
     /**
@@ -34,7 +48,7 @@ public class PersonalMedico extends javax.swing.JDialog {
         buttonGroupAlcohol = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         botonRegistrar = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -46,9 +60,9 @@ public class PersonalMedico extends javax.swing.JDialog {
         campoUsuario = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        campoPass = new javax.swing.JPasswordField();
         jLabel15 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboTipo = new javax.swing.JComboBox<>();
+        campoPass = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -79,8 +93,8 @@ public class PersonalMedico extends javax.swing.JDialog {
             }
         });
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos personales"));
-        jPanel3.setOpaque(false);
+        panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos personales"));
+        panel.setOpaque(false);
 
         jLabel3.setText("NOMBRE");
 
@@ -90,79 +104,92 @@ public class PersonalMedico extends javax.swing.JDialog {
 
         jLabel7.setText("TELÉFONO");
 
+        campoNumeroColegiado.setName("NÚMERO DE COLEGIADO"); // NOI18N
+
+        campoNombre.setName("NOMBRE"); // NOI18N
+
+        campoApellidos.setName("APELLIDOS"); // NOI18N
+
+        campoTelefono.setName("TELÉFONO"); // NOI18N
+
+        campoUsuario.setName("USUARIO"); // NOI18N
+
         jLabel13.setText("USUARIO");
 
         jLabel14.setText("CONTRASEÑA");
 
         jLabel15.setText("TIPO");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "Médico", "Enfermería" }));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        comboTipo.setName("TIPO"); // NOI18N
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        campoPass.setName("CONTRASEÑA"); // NOI18N
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(panelLayout.createSequentialGroup()
                             .addComponent(jLabel7)
                             .addGap(134, 134, 134)
                             .addComponent(campoTelefono))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createSequentialGroup()
+                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel4)
                                 .addComponent(jLabel3)
                                 .addComponent(jLabel5))
                             .addGap(85, 85, 85)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(campoNumeroColegiado, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
                                 .addComponent(campoNombre)
                                 .addComponent(campoApellidos)))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createSequentialGroup()
+                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel13)
                                 .addComponent(jLabel14))
                             .addGap(114, 114, 114)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBox1, 0, 311, Short.MAX_VALUE)
-                                .addComponent(campoPass)
-                                .addComponent(campoUsuario)))))
+                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(comboTipo, 0, 311, Short.MAX_VALUE)
+                                .addComponent(campoUsuario)
+                                .addComponent(campoPass)))))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(campoNumeroColegiado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(campoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(campoPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel15)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(57, Short.MAX_VALUE))
         );
 
@@ -174,7 +201,7 @@ public class PersonalMedico extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(80, 80, 80)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(251, 251, 251)
                         .addComponent(botonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -184,7 +211,7 @@ public class PersonalMedico extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
@@ -240,7 +267,65 @@ public class PersonalMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRegistrarActionPerformed
-        // TODO add your handling code here:
+// Tiene que:
+//Primero Validamos todos los campos para que no esten vacios.
+// Numero debe ser 9 valores numéricos y el primero diferente a 0
+// Telefono debe ser 9 valores numéricos
+// Que el usuario no exista
+//Que no exista un usuario con ese numero de colegiado
+// Una vez validados, tenemos que coger y encriptar la contraseña.
+// 
+//Crearemos entonces un Personal con los anteriores valores conseguidos
+// 
+// Enviaremos con una consulta en conexion estos valores a la base de datos
+//
+        boolean comprobaciones = true;
+        Conexion.Conectar();
+        if (!utilidades.Utilidades.compruebaCamposVacios(panel) && comprobaciones == true) {
+            comprobaciones = false;
+        }
+        if (!Utilidades.compruebaNumeroColegiado(campoNumeroColegiado)) {
+            comprobaciones = false;
+        }
+        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono) && comprobaciones == true) {
+            comprobaciones = false;
+        }
+        if (Conexion.existeUsuario(campoUsuario.getText())) {
+            JOptionPane.showMessageDialog(null, "Ya existe un usuario con ese nombre.");
+            comprobaciones = false;
+        }
+        if (Conexion.existeNumeroColegiado(campoNumeroColegiado.getText())) {
+            JOptionPane.showMessageDialog(null, "Ya existe un usuario con ese número de colegiado.");
+            comprobaciones = false;
+        }
+        Conexion.desconectar();
+
+//            public Personal(int numero_colegiado, String nombre, String apellidos, int telefono, String usuario, String contrasenya, String tipo) {
+        if (comprobaciones == true) {
+            int numcol = Integer.parseInt(campoNumeroColegiado.getText());
+            String nom = campoNombre.getText();
+            String ape = campoApellidos.getText();
+            int tel = Integer.parseInt(campoTelefono.getText());
+            String usu = campoUsuario.getText();
+            String passinencriptar = new String(campoPass.getPassword());
+            String pas = Encriptado.encriptar(passinencriptar);
+            String tip = comboTipo.getSelectedItem().toString();
+
+            Personal pp = new Personal(numcol, nom, ape, tel, usu, pas, tip);
+
+            Conexion.Conectar();
+
+            if (bbdd.Conexion.registrarPersonal(pp)) {
+                JOptionPane.showMessageDialog(this, "Personal registrado correctamente");
+                Conexion.desconectar();
+                utilidades.Utilidades.reseteaFormulario(panel);
+            } else {
+                Conexion.desconectar();
+                JOptionPane.showMessageDialog(this, "Error en el registro, intentelo de nuevo.");
+            }
+        }
+
+
     }//GEN-LAST:event_botonRegistrarActionPerformed
 
     /**
@@ -303,7 +388,7 @@ public class PersonalMedico extends javax.swing.JDialog {
     private javax.swing.JPasswordField campoPass;
     private javax.swing.JTextField campoTelefono;
     private javax.swing.JTextField campoUsuario;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -315,8 +400,8 @@ public class PersonalMedico extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

@@ -136,8 +136,20 @@ public class NuevoPaciente extends javax.swing.JDialog {
         jLabel12.setText("CONSUMO DE ALCOHOL");
 
         campoDni.setEnabled(false);
+        campoDni.setName("DNI"); // NOI18N
+
+        campoNombre.setName("NOMBRE"); // NOI18N
+
+        campoApellidos.setName("APELLIDOS"); // NOI18N
+
+        dateFechaNacimiento.setName("FECHA DE NACIMIENTO"); // NOI18N
+
+        campoTelefono.setName("TELÉFONO"); // NOI18N
+
+        campoEmail.setName("EMAIL"); // NOI18N
 
         comboCodigoPostal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        comboCodigoPostal.setName("CÓDIGO POSTAL"); // NOI18N
 
         buttonGroupSexo.add(radioMujer);
         radioMujer.setText("Mujer");
@@ -279,12 +291,14 @@ public class NuevoPaciente extends javax.swing.JDialog {
 
         campoAntecedente.setColumns(20);
         campoAntecedente.setRows(5);
+        campoAntecedente.setName("ANTECEDENTES FAMILIARES"); // NOI18N
         jScrollPane2.setViewportView(campoAntecedente);
 
         jLabel14.setText("PERSONAL (ALERGIAS, CIRUGÍAS, ENFERMEDADES, ETC.)");
 
         campoPersonalAlerg.setColumns(20);
         campoPersonalAlerg.setRows(5);
+        campoPersonalAlerg.setName("DATOS PERSONALES"); // NOI18N
         jScrollPane3.setViewportView(campoPersonalAlerg);
 
         javax.swing.GroupLayout panelAreasLayout = new javax.swing.GroupLayout(panelAreas);
@@ -414,28 +428,28 @@ public class NuevoPaciente extends javax.swing.JDialog {
         if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupSexo)) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupAlcohol)) {
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupAlcohol) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupTabaquismo)) {
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupTabaquismo) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaCamposVacios(panelCampos)) {
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelCampos) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaCamposVacios(panelAreas)) {
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelAreas) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.validarDNI(dniPaciente)) {
+//        if (!utilidades.Utilidades.validarDNI(dniPaciente) && comprobaciones == true) {
+//            comprobaciones = false;
+//        }
+        if (!utilidades.Utilidades.validarEmail(campoEmail.getText()) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.validarEmail(campoEmail.getText())) {
+        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono) && comprobaciones == true) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono)) {
-            comprobaciones = false;
-        }
-        if (!dateFechaNacimiento.getDate().before(hoy)) {
+        if (!dateFechaNacimiento.getDate().before(hoy) && comprobaciones == true) {
             JOptionPane.showMessageDialog(this, "La fecha de nacimiento debe ser congruente.");
             comprobaciones = false;
 

@@ -96,11 +96,23 @@ public class Utilidades {
                 JOptionPane.showMessageDialog(null, "El numero de telefono debe tener 9 dígitos.");
                 return false;
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "El campo " + campo.getName() + " debe ser numérico.");
-            return false;
         }
+        return false;
+    }
 
+    public static boolean compruebaNumeroColegiado(JTextField campo) {
+
+        if (compruebaNumeroEntero(campo)) {
+            if (campo.getText().length() == 9) {
+                if (Integer.parseInt(campo.getText()) > 99999999) {
+                    return true;
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El numero de colegiado debe tener 9 dígitos y el primero no puede ser 0.");
+                return false;
+            }
+        }
+        return false;
     }
 
     public static boolean validarDNI(String dni) {
