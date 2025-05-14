@@ -4,6 +4,10 @@
  */
 package vistas;
 
+import utilidades.Encriptado;
+import static vistas.ConsultaMedica.datosPaciente;
+import static vistas.Login.dniPaciente;
+
 /**
  *
  * @author josavi
@@ -16,6 +20,9 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
     public NuevaCitaEnfermeria(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        campoDni.setText(dniPaciente);
+        campoNombreApellidos.setText(Encriptado.desencriptar(datosPaciente[1]) + Encriptado.desencriptar(datosPaciente[2]));
+
     }
 
     /**
@@ -64,6 +71,8 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
 
         jLabel3.setText("DNI PACIENTE");
 
+        campoDni.setEnabled(false);
+
         botonGuardar.setText("GUARDAR");
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -72,6 +81,8 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
         });
 
         jLabel8.setText("NOMBRE Y APELLIDOS");
+
+        campoNombreApellidos.setEnabled(false);
 
         jLabel9.setText("HORA");
 
@@ -138,11 +149,11 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10)
                         .addComponent(comboFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(botonGuardar)
                 .addGap(63, 63, 63))
         );
@@ -201,7 +212,7 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        
+
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGuardarActionPerformed
 

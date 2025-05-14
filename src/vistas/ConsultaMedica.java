@@ -5,9 +5,17 @@
 package vistas;
 
 import bbdd.Conexion;
+import java.awt.Frame;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import utilidades.Encriptado;
 import static vistas.Login.datosPersonal;
+import static vistas.Login.dniPaciente;
+import vistas.MenuPrincipal;
 
 /**
  *
@@ -76,6 +84,8 @@ public class ConsultaMedica extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
 
         jLabel3.setText("DNI PACIENTE");
+
+        campoDniPaciente.setName("DNI"); // NOI18N
 
         botonComprobarPaciente.setText("COMPROBAR PACIENTE");
         botonComprobarPaciente.addActionListener(new java.awt.event.ActionListener() {
@@ -179,6 +189,12 @@ public class ConsultaMedica extends javax.swing.JDialog {
                 "FECHA", "DIAGNÓSTICO", "TRATAMIENTO", "OBSERVACIONES"
             }
         ));
+        tabla.setEnabled(false);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabla);
 
         botonActualizarTabla.setText("ACTUALIZAR TABLA");
@@ -290,47 +306,78 @@ public class ConsultaMedica extends javax.swing.JDialog {
     }//GEN-LAST:event_botonActualizarTablaActionPerformed
 
     private void botonNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevaCitaActionPerformed
-        // TODO add your handling code here:
+        Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+        NuevaCitaMedica ncm = new NuevaCitaMedica(parent, rootPaneCheckingEnabled);
+        ncm.setVisible(rootPaneCheckingEnabled);
+
     }//GEN-LAST:event_botonNuevaCitaActionPerformed
 
     private void botonNuevoInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoInformeActionPerformed
-//        NuevoInformeMedico cm = new NuevoInformeMedico(this, rootPaneCheckingEnabled);
-//        cm.setVisible(rootPaneCheckingEnabled);
+        Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+        NuevoInformeMedico nim = new NuevoInformeMedico(parent, rootPaneCheckingEnabled);
+        nim.setVisible(rootPaneCheckingEnabled);
 
 
     }//GEN-LAST:event_botonNuevoInformeActionPerformed
 
     private void botonComprobarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonComprobarPacienteActionPerformed
 
-        if (Conexion.existePaciente(Encriptado.encriptar(campoDniPaciente.toString()))) {
-
-            datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(campoDniPaciente.toString()));
-            campoNombre.setText(datosPaciente[0]);
-            campoApellidos.setText(datosPaciente[1]);
-            campoTelefono.setText(datosPaciente[2]);
-            campoEmail.setText(datosPaciente[3]);
-            botonNuevoInforme.setEnabled(true);
-            botonNuevaCita.setEnabled(true);
-            DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-            
-            Conexion.Conectar();
-            Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
-            Conexion.desconectar();
-
+        boolean comprobacions = false;
+        if (utilidades.Utilidades.validarDNI(campoDniPaciente.getText())) {
+            dniPaciente = campoDniPaciente.getText();
+            comprobacions = true;
         }
+        Conexion.Conectar();
 
-//        if (!existePaciente) {
-//
-//            campoNombre.setEnabled(true);
-//            campoApellidos.setEnabled(true);
-//            campoTelefono.setEnabled(true);
-//            campoEmail.setEnabled(true);
-//
-//        }
+        if (comprobacions == true) {
+            if (Conexion.existePaciente(Encriptado.encriptar(dniPaciente.toString()))) {
 
-        // TODO add your handling code here:
+                datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(dniPaciente.toString()));
+                campoNombre.setText(Encriptado.desencriptar(datosPaciente[0]));
+                campoApellidos.setText(Encriptado.desencriptar(datosPaciente[1]));
+                campoTelefono.setText(datosPaciente[2]);
+                campoEmail.setText(datosPaciente[3]);
+                botonNuevoInforme.setEnabled(true);
+                botonNuevaCita.setEnabled(true);
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
+                Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
+                Conexion.desconectar();
+
+            } else {
+                Login.dniPaciente = campoDniPaciente.getText();
+                Conexion.desconectar();
+                int ok = JOptionPane.showConfirmDialog(
+                        this,
+                        "No existe un paciente con este DNI, para ingresar un nuevo paciente pulse \"OK\".",
+                        "PACIENTE NO REGISTRADO",
+                        JOptionPane.OK_CANCEL_OPTION);
+
+                if (JOptionPane.OK_OPTION == ok) {
+                    Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+                    NuevoPaciente npe = new NuevoPaciente(parent, rootPaneCheckingEnabled);
+                    npe.setVisible(rootPaneCheckingEnabled);
+
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El DNI no esta escrito correctamente.");
+        }
     }//GEN-LAST:event_botonComprobarPacienteActionPerformed
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+
+        int fila = tabla.getSelectedRow();
+        int columna = tabla.getSelectedColumn();
+        String informe = String.valueOf(tabla.getValueAt(fila, columna));
+
+                int ok = JOptionPane.showConfirmDialog(
+                        this,
+                        informe,
+                        "INFORME",
+                        JOptionPane.INFORMATION_MESSAGE);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaMouseClicked
 
     /**
      * @param args the command line arguments

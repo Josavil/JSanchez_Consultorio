@@ -210,9 +210,9 @@ public class Conexion {
 
             return rs.next(); // Si existe devuelve TRue
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+
     }
 
     public static boolean existeUsuario(String usu) {
@@ -248,14 +248,15 @@ public class Conexion {
     }
 
     public static String[] conseguirDatosPaciente(String dnipac) {
-        String consulta = "SELECT paciente.nombre AS NOMBRE, paciente.apellidos AS APELLIDOS, paciente.telefono AS TELEFONO, paciente.email AS EMAIL "
-                + "FROM paciente "
-                + "WHERE dni = ?";
-        PreparedStatement pst;
-        ResultSet rs;
-        String[] userData = new String[4];
-
         try {
+            String consulta = "SELECT paciente.nombre AS NOMBRE, paciente.apellidos AS APELLIDOS, paciente.telefono AS TELEFONO, paciente.email AS EMAIL "
+                    + "FROM paciente "
+                    + "WHERE dni = ?";
+            PreparedStatement pst;
+            ResultSet rs;
+            String[] userData = new String[4];
+            
+            
             pst = (PreparedStatement) conn.prepareStatement(consulta);
             pst.setString(1, dnipac);
             rs = pst.executeQuery();
@@ -265,25 +266,40 @@ public class Conexion {
                 userData[1] = rs.getString("APELLIDOS");
                 userData[2] = rs.getString("TELEFONO");
                 userData[3] = rs.getString("EMAIL");
-            } else {
-                userData[0] = "";
-                userData[1] = "";
-                userData[2] = "";
-                userData[3] = "";
             }
-
-            rs.close();
-            pst.close();
-
+            
+            
+            
+            return userData;  
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-            userData[0] = "";
-            userData[1] = "";
-            userData[2] = "";
-            userData[3] = "";
+        }
+        return null;
+    }
+
+    public static void tablaInfoPacientes(DefaultTableModel modelo) {
+
+        Object[] datos = new Object[5];
+
+        String consulta = "SELECT paciente.dni AS DNI, paciente.nombre AS NOMBRE, paciente.apellidos AS APELLIDOS, "
+                + "paciente.telefono AS TELEFONO, paciente.cp AS CP FROM paciente;";
+        try {
+            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
+            ResultSet rs = st.executeQuery(consulta);
+            modelo.setRowCount(0);
+            while (rs.next()) {
+                datos[0] = Encriptado.desencriptar(rs.getString("DNI"));
+                datos[1] = Encriptado.desencriptar(rs.getString("NOMBRE"));
+                datos[2] = Encriptado.desencriptar(rs.getString("APELLIDOS"));
+                datos[3] = rs.getString("TELEFONO");
+                datos[4] = rs.getString("CP");
+
+                modelo.addRow(datos);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return userData;  // Return the array regardless of what happened
     }
 
     public static void cargaComboCP(JComboBox combo) {
@@ -346,6 +362,31 @@ public class Conexion {
             st.setObject(11, p.getAntecedentesSalud());
             st.setObject(12, p.getDatosSaludGeneral());
             st.setObject(13, p.getFechaRegistro());
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean actualizarPaciente(Paciente pi) {
+        try {
+            String consulta = "UPDATE paciente SET nombre =?, apellidos =?, "
+                    + "telefono =?, cp =? "
+                    + "WHERE dni = ?;";
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, pi.getNombre());
+            st.setObject(2, pi.getApellidos());
+            st.setObject(3, pi.getTelefono());
+            st.setObject(4, pi.getCp());
+            st.setObject(5, pi.getDni());
 
             st.execute();
             return true;

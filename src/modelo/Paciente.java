@@ -26,6 +26,14 @@ private String antecedentesSalud;
 private String datosSaludGeneral;
 private Date fechaRegistro;    
 
+    public Paciente(String dni, String nombre, String apellidos, int telefono, int cp) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.cp = cp;
+    }
+
     public Paciente(String dni, String nombre, String apellidos, Date fechaNacimiento, int telefono, String email, int cp, String sexo, String tabaquismo, String consumocalcohol, String antecedentesSalud, String datosSaludGeneral, Date fechaRegistro) {
         this.dni = dni;
         this.nombre = nombre;

@@ -4,6 +4,16 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import java.awt.Frame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import utilidades.Encriptado;
+import static vistas.ConsultaMedica.datosPaciente;
+import static vistas.Login.datosPersonal;
+import static vistas.Login.dniPaciente;
+
 /**
  *
  * @author josavi
@@ -44,7 +54,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         campoTelefono = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        camopEmail = new javax.swing.JTextField();
+        campoEmail = new javax.swing.JTextField();
         botonNuevoInforme = new javax.swing.JButton();
         botonNuevaCita = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -102,6 +112,11 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         jLabel3.setText("DNI PACIENTE");
 
         botonBuscarPaciente.setText("BUSCAR PACIENTE");
+        botonBuscarPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonBuscarPacienteActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(0, 204, 204));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("PACIENTE"));
@@ -120,7 +135,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
 
         jLabel8.setText("EMAIL");
 
-        camopEmail.setEnabled(false);
+        campoEmail.setEnabled(false);
 
         botonNuevoInforme.setText("Nuevo informe");
         botonNuevoInforme.setEnabled(false);
@@ -132,6 +147,11 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
 
         botonNuevaCita.setText("Nueva cita");
         botonNuevaCita.setEnabled(false);
+        botonNuevaCita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNuevaCitaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -155,7 +175,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
                         .addGap(52, 52, 52)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(camopEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(337, 337, 337)
                         .addComponent(botonNuevoInforme, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +195,7 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
                     .addComponent(jLabel7)
                     .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(camopEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonNuevoInforme)
@@ -267,10 +287,62 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonNuevoInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoInformeActionPerformed
+        Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+        NuevoInformeEnfermeria nien = new NuevoInformeEnfermeria(parent, rootPaneCheckingEnabled);
+        nien.setVisible(rootPaneCheckingEnabled);
 
-//        NuevoInformeEnfermeria cma = new NuevoInformeEnfermeria(this, rootPaneCheckingEnabled);
-//        cma.setVisible(rootPaneCheckingEnabled);
     }//GEN-LAST:event_botonNuevoInformeActionPerformed
+
+    private void botonBuscarPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarPacienteActionPerformed
+
+        boolean comprobacions = false;
+        if (utilidades.Utilidades.validarDNI(campoDniPaciente.getText())) {
+            dniPaciente = campoDniPaciente.getText();
+            comprobacions = true;
+        } 
+        Conexion.Conectar();
+
+        if (comprobacions == true) {
+            if (Conexion.existePaciente(Encriptado.encriptar(dniPaciente.toString()))) {
+
+                datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(dniPaciente.toString()));
+                campoNombre.setText(Encriptado.desencriptar(datosPaciente[0]));
+                campoApellidos.setText(Encriptado.desencriptar(datosPaciente[1]));
+                campoTelefono.setText(datosPaciente[2]);
+                campoEmail.setText(datosPaciente[3]);
+                botonNuevoInforme.setEnabled(true);
+                botonNuevaCita.setEnabled(true);
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+
+                Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
+                Conexion.desconectar();
+
+            } else {
+                Login.dniPaciente = campoDniPaciente.getText();
+                Conexion.desconectar();
+                int ok = JOptionPane.showConfirmDialog(
+                        this,
+                        "No existe un paciente con este DNI, para ingresar un nuevo paciente pulse \"OK\".",
+                        "PACIENTE NO REGISTRADO",
+                        JOptionPane.OK_CANCEL_OPTION);
+
+                if (JOptionPane.OK_OPTION == ok) {
+                    Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+                    NuevoPaciente npe = new NuevoPaciente(parent, rootPaneCheckingEnabled);
+                    npe.setVisible(rootPaneCheckingEnabled);
+
+                }
+            }
+        } else {
+                JOptionPane.showMessageDialog(this, "El DNI no esta escrito correctamente.");
+        }
+
+    }//GEN-LAST:event_botonBuscarPacienteActionPerformed
+
+    private void botonNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevaCitaActionPerformed
+        Frame parent = (Frame) SwingUtilities.getWindowAncestor(this);
+        NuevaCitaEnfermeria ncm = new NuevaCitaEnfermeria(parent, rootPaneCheckingEnabled);
+        ncm.setVisible(rootPaneCheckingEnabled);    }//GEN-LAST:event_botonNuevaCitaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -320,9 +392,9 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
     private javax.swing.JButton botonBuscarPaciente;
     private javax.swing.JButton botonNuevaCita;
     private javax.swing.JButton botonNuevoInforme;
-    private javax.swing.JTextField camopEmail;
     private javax.swing.JTextField campoApellidos;
     private javax.swing.JTextField campoDniPaciente;
+    private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoTelefono;
     private javax.swing.JLabel jLabel1;
@@ -341,4 +413,6 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
+    public static String[] datosPaciente;
+
 }

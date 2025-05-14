@@ -4,6 +4,9 @@
  */
 package vistas;
 
+import static java.lang.System.exit;
+import static vistas.Login.dniPaciente;
+
 /**
  *
  * @author josavi
@@ -16,6 +19,7 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
     public NuevoInformeMedico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        campoDniPaciente.setText(dniPaciente);
     }
 
     /**
@@ -29,11 +33,10 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         campoDniPaciente = new javax.swing.JTextField();
         botonGuardar = new javax.swing.JButton();
-        botonComprobarPaciente = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         campoDiagnostico = new javax.swing.JTextArea();
         jLabel9 = new javax.swing.JLabel();
@@ -67,9 +70,11 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
         setPreferredSize(new java.awt.Dimension(1000, 650));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        panel.setBackground(new java.awt.Color(0, 204, 204));
 
         jLabel3.setText("DNI PACIENTE");
+
+        campoDniPaciente.setEnabled(false);
 
         botonGuardar.setText("GUARDAR");
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -78,10 +83,9 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
             }
         });
 
-        botonComprobarPaciente.setText("COMPROBAR PACIENTE");
-
         campoDiagnostico.setColumns(20);
         campoDiagnostico.setRows(5);
+        campoDiagnostico.setName("DIAGNÓSTICO"); // NOI18N
         jScrollPane3.setViewportView(campoDiagnostico);
 
         jLabel9.setText("DIAGNÓSTICO");
@@ -95,6 +99,7 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
 
         campoTratamiento.setColumns(20);
         campoTratamiento.setRows(5);
+        campoTratamiento.setName("TRATAMIENTO"); // NOI18N
         jScrollPane4.setViewportView(campoTratamiento);
 
         jLabel10.setText("TRATAMIENTO");
@@ -103,47 +108,45 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
 
         campoObservaciones.setColumns(20);
         campoObservaciones.setRows(5);
+        campoObservaciones.setName("OBSERVACIONES"); // NOI18N
         jScrollPane5.setViewportView(campoObservaciones);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(26, 26, 26)
                         .addComponent(campoDniPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(botonComprobarPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
                             .addComponent(jLabel9)
                             .addComponent(jLabel10)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 927, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)))
                         .addContainerGap(18, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(232, 232, 232)
                 .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(136, 136, 136)
                 .addComponent(botonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 224, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(campoDniPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonComprobarPaciente))
+                    .addComponent(campoDniPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
@@ -157,7 +160,7 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonGuardar)
                     .addComponent(botonCancelar))
                 .addGap(7, 7, 7))
@@ -198,14 +201,14 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -213,11 +216,12 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        
+        utilidades.Utilidades.compruebaCamposVacios(panel);
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        exit(0);
         // TODO add your handling code here:
     }//GEN-LAST:event_botonCancelarActionPerformed
 
@@ -266,7 +270,6 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
-    private javax.swing.JButton botonComprobarPaciente;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JTextArea campoDiagnostico;
     private javax.swing.JTextField campoDniPaciente;
@@ -278,12 +281,12 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

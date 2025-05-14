@@ -8,7 +8,7 @@ import bbdd.Conexion;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import modelo.Paciente;
-import java.sql.Date;
+import java.util.Date;
 import utilidades.Encriptado;
 import static vistas.Login.dniPaciente;
 import static vistas.MenuPrincipal.hoy;
@@ -26,7 +26,7 @@ public class NuevoPaciente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         //campoDni.setText(dniPaciente);
-
+        campoDni.setText(dniPaciente);
         Conexion.Conectar();
         Conexion.cargaComboCP(comboCodigoPostal);
         Conexion.desconectar();
@@ -428,28 +428,28 @@ public class NuevoPaciente extends javax.swing.JDialog {
         if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupSexo)) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupAlcohol) && comprobaciones == true) {
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupAlcohol) && comprobaciones) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupTabaquismo) && comprobaciones == true) {
+        if (!utilidades.Utilidades.compruebaButtonRadios(buttonGroupTabaquismo) && comprobaciones) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaCamposVacios(panelCampos) && comprobaciones == true) {
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelCampos) && comprobaciones) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaCamposVacios(panelAreas) && comprobaciones == true) {
+        if (!utilidades.Utilidades.compruebaCamposVacios(panelAreas) && comprobaciones) {
             comprobaciones = false;
         }
 //        if (!utilidades.Utilidades.validarDNI(dniPaciente) && comprobaciones == true) {
 //            comprobaciones = false;
 //        }
-        if (!utilidades.Utilidades.validarEmail(campoEmail.getText()) && comprobaciones == true) {
+        if (!utilidades.Utilidades.validarEmail(campoEmail.getText()) && comprobaciones) {
             comprobaciones = false;
         }
-        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono) && comprobaciones == true) {
+        if (!utilidades.Utilidades.compruebaNumeroTelefono(campoTelefono) && comprobaciones) {
             comprobaciones = false;
-        }
-        if (!dateFechaNacimiento.getDate().before(hoy) && comprobaciones == true) {
+        }        
+        if (!dateFechaNacimiento.getDate().before(hoy) && comprobaciones) {
             JOptionPane.showMessageDialog(this, "La fecha de nacimiento debe ser congruente.");
             comprobaciones = false;
 
@@ -481,21 +481,21 @@ public class NuevoPaciente extends javax.swing.JDialog {
             alcohol = "Nulo";
         }
 
-        if (comprobaciones = true) {
+        if (comprobaciones) {
 
             String dni = Encriptado.encriptar(dniPaciente);
             String nom = Encriptado.encriptar(campoNombre.getText());
             String ape = Encriptado.encriptar(campoApellidos.getText());
-            Date fec = (Date) dateFechaNacimiento.getDate();
+            java.util.Date fec = dateFechaNacimiento.getDate();
             int tel = Integer.parseInt(campoTelefono.getText());
             String ema = campoEmail.getText();
-            int cp = (int) comboCodigoPostal.getSelectedItem();
+            int cp = Integer.parseInt((String) comboCodigoPostal.getSelectedItem());
             String sex = sexo;
             String tab = tabaco;
             String alc = alcohol;
             String antSal = campoAntecedente.getText();
             String datAle = campoPersonalAlerg.getText();
-            Date fechoy = (Date) hoy;
+            java.util.Date fechoy = hoy;
 
             Paciente p = new Paciente(dni, nom, ape, fec, tel, ema, cp, sex, tab, alc, antSal, datAle, fechoy);
             Conexion.Conectar();

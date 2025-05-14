@@ -4,6 +4,12 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import utilidades.Encriptado;
+import static vistas.ConsultaMedica.datosPaciente;
+import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
+
 /**
  *
  * @author josavi
@@ -16,6 +22,9 @@ public class NuevaCitaMedica extends javax.swing.JDialog {
     public NuevaCitaMedica(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        campoDni.setText(dniPaciente);
+        dateFecha.setMinSelectableDate(hoy);
+        campoNombreApellidos.setText(Encriptado.desencriptar(datosPaciente[1]) + Encriptado.desencriptar(datosPaciente[2]));
     }
 
     /**
@@ -64,6 +73,8 @@ public class NuevaCitaMedica extends javax.swing.JDialog {
 
         jLabel3.setText("DNI PACIENTE");
 
+        campoDni.setEnabled(false);
+
         botonGuardar.setText("GUARDAR");
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,11 +84,13 @@ public class NuevaCitaMedica extends javax.swing.JDialog {
 
         jLabel8.setText("NOMBRE Y APELLIDOS");
 
+        campoNombreApellidos.setEnabled(false);
+
         jLabel9.setText("HORA");
 
         jLabel10.setText("FECHA");
 
-        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24" }));
         comboHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboHoraActionPerformed(evt);
@@ -193,7 +206,13 @@ public class NuevaCitaMedica extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        
+//
+//        Conexion.Conectar();
+//        Conexion.
+//        
+//        Conexion.desconectar();
+//        
+//        
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGuardarActionPerformed
 
