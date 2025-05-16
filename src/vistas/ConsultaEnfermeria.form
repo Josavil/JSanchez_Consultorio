@@ -351,6 +351,9 @@
                   </Table>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -359,6 +362,9 @@
             <Property name="text" type="java.lang.String" value="ACTUALIZAR TABLA"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonActualizarTablaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -141,6 +141,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoDniPaciente">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="botonGuardar">
           <Properties>
@@ -226,8 +229,14 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoMaxima">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="M&#xc1;XIMA" noResource="true"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoMinima">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="M&#xcd;NIMA" noResource="true"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -271,6 +280,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoNivelGlucosa">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="NIVEL DE GLUCOSA" noResource="true"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -318,6 +330,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="campoPeso">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="PESO" noResource="true"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

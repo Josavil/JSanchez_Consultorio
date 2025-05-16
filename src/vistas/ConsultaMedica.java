@@ -6,16 +6,14 @@ package vistas;
 
 import bbdd.Conexion;
 import java.awt.Frame;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.awt.Insets;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import utilidades.Encriptado;
-import static vistas.Login.datosPersonal;
 import static vistas.Login.dniPaciente;
-import vistas.MenuPrincipal;
 
 /**
  *
@@ -189,7 +187,6 @@ public class ConsultaMedica extends javax.swing.JDialog {
                 "FECHA", "DIAGNÓSTICO", "TRATAMIENTO", "OBSERVACIONES"
             }
         ));
-        tabla.setEnabled(false);
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaMouseClicked(evt);
@@ -301,8 +298,12 @@ public class ConsultaMedica extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarTablaActionPerformed
+        Conexion.Conectar();
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        String dniTabla = Encriptado.encriptar(dniPaciente);
+        Conexion.tablaMedicoConsultas(modelo, dniTabla);
+        Conexion.desconectar();
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_botonActualizarTablaActionPerformed
 
     private void botonNuevaCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevaCitaActionPerformed
@@ -333,15 +334,14 @@ public class ConsultaMedica extends javax.swing.JDialog {
             if (Conexion.existePaciente(Encriptado.encriptar(dniPaciente.toString()))) {
 
                 datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(dniPaciente.toString()));
+
                 campoNombre.setText(Encriptado.desencriptar(datosPaciente[0]));
                 campoApellidos.setText(Encriptado.desencriptar(datosPaciente[1]));
                 campoTelefono.setText(datosPaciente[2]);
                 campoEmail.setText(datosPaciente[3]);
                 botonNuevoInforme.setEnabled(true);
                 botonNuevaCita.setEnabled(true);
-                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-                Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
+                botonActualizarTabla.setEnabled(true);
                 Conexion.desconectar();
 
             } else {
@@ -368,15 +368,29 @@ public class ConsultaMedica extends javax.swing.JDialog {
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
 
         int fila = tabla.getSelectedRow();
-        int columna = tabla.getSelectedColumn();
-        String informe = String.valueOf(tabla.getValueAt(fila, columna));
 
-                int ok = JOptionPane.showConfirmDialog(
-                        this,
-                        informe,
-                        "INFORME",
-                        JOptionPane.INFORMATION_MESSAGE);
-        // TODO add your handling code here:
+        String[] informe = new String[4];
+        informe[0] = String.valueOf(tabla.getValueAt(fila, 0));
+        informe[1] = String.valueOf(tabla.getValueAt(fila, 1));
+        informe[2] = String.valueOf(tabla.getValueAt(fila, 2));
+        informe[3] = String.valueOf(tabla.getValueAt(fila, 3));
+
+        String contenido = "FECHA DE CONSULTA: " + informe[0];
+        contenido += "\n\nDIAGNÓSTICO:\n " + informe[1];
+        contenido += "\n\nTRATAMIENTO:\n " + informe[2];
+        contenido += "\n\nOBSERVACIONES:\n " + informe[3];
+
+        JTextArea t = new JTextArea(20, 60);
+        t.setText(contenido);
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setFocusable(false);
+        t.setAutoscrolls(true);
+        t.setMargin(new Insets(10, 10, 10, 10));
+
+        JOptionPane.showMessageDialog(this, new JScrollPane(t), "INFORME", 1);
+
+
     }//GEN-LAST:event_tablaMouseClicked
 
     /**

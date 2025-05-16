@@ -4,20 +4,22 @@
  */
 package bbdd;
 
-import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import modelo.Cita;
+import modelo.Consulta;
+import modelo.ConsultaEnferemeria;
 import modelo.Paciente;
 import modelo.Personal;
 import utilidades.Encriptado;
-import vistas.PersonalMedico;
+import utilidades.UtilidadEmail;
 
 /**
  * En esta clase incluiremos todos los métodos para interactuar con la base de
@@ -198,6 +200,67 @@ public class Conexion {
         }
     }
 
+    public static void tablaMedicoConsultas(DefaultTableModel modelo, String dni) {
+        Object[] datos = new Object[4];
+
+        String consulta = "SELECT fechaConsulta AS FECHA, diagnostico AS DIAGNOSTICO, "
+                + "tratamiento AS TRATAMIENTO, observaciones AS OBSERVACIONES "
+                + "FROM consultas "
+                + "WHERE dniPaciente = ? ;";
+
+        try {
+            PreparedStatement pst;
+            ResultSet rs;
+
+            pst = conn.prepareStatement(consulta);
+            pst.setString(1, dni);
+            rs = pst.executeQuery();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+                datos[0] = rs.getString("FECHA");
+                datos[1] = rs.getString("DIAGNOSTICO");
+                datos[2] = rs.getString("TRATAMIENTO");
+                datos[3] = rs.getString("OBSERVACIONES");
+
+                modelo.addRow(datos);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void tablaEnfermeriaConsultas(DefaultTableModel modelo, String dni) {
+        Object[] datos = new Object[5];
+
+        String consulta = "SELECT fechaConsulta AS FECHA, tensionMax AS MAXIMA, "
+                + "tensionMin AS MINIMA, glucosa AS GLUCOSA, peso AS PESO "
+                + "FROM enfermeria "
+                + "WHERE dniPaciente = ? ;";
+
+        try {
+            PreparedStatement pst;
+            ResultSet rs;
+
+            pst = conn.prepareStatement(consulta);
+            pst.setString(1, dni);
+            rs = pst.executeQuery();
+            modelo.setRowCount(0);
+
+            while (rs.next()) {
+                datos[0] = rs.getString("FECHA");
+                datos[1] = rs.getString("MAXIMA");
+                datos[2] = rs.getString("MINIMA");
+                datos[3] = rs.getString("GLUCOSA");
+                datos[4] = rs.getString("PESO");
+
+                modelo.addRow(datos);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public static boolean existePaciente(String dnipac) {
 
         try {
@@ -255,8 +318,7 @@ public class Conexion {
             PreparedStatement pst;
             ResultSet rs;
             String[] userData = new String[4];
-            
-            
+
             pst = (PreparedStatement) conn.prepareStatement(consulta);
             pst.setString(1, dnipac);
             rs = pst.executeQuery();
@@ -267,10 +329,8 @@ public class Conexion {
                 userData[2] = rs.getString("TELEFONO");
                 userData[3] = rs.getString("EMAIL");
             }
-            
-            
-            
-            return userData;  
+
+            return userData;
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -424,78 +484,145 @@ public class Conexion {
         return false;
     }
 
-//    public static String nombresito(String user, String pass) {
-//
-//        String consulta = "SELECT CONCAT (nombre, ' ', apellidos) AS NOMBRESITO FROM empleados WHERE usuario=? AND contraseña=?";
-//        try {
-//            PreparedStatement pst;
-//            ResultSet rs;
-//
-//            pst = conn.prepareStatement(consulta);
-//            pst.setString(1, user);
-//            pst.setString(2, pass);
-//            rs = pst.executeQuery();
-//
-//            if (rs.next()) {
-//                return rs.getString("NOMBRESITO");
-//            }
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(ConsultasEmpleados.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//        return null;
-//    }
-//
-//
-//
-//    public static void cargaComboAnioSalon(JComboBox combo) {
-//
-//        try {
-//            String SSQL = "SELECT DISTINCT DATE(fecha) AS FECHA FROM reserva_salon";
-//
-//            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
-//            ResultSet rs = st.executeQuery(SSQL);
-//
-//            while (rs.next()) {
-//                combo.addItem(rs.getString("FECHA"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
-//
-//    public static void cargaComboCaterin(JComboBox combo) {
-//
-//        try {
-//            String SSQL = "SELECT DISTINCT caterin AS CATERIN FROM reserva_salon";
-//
-//            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
-//            ResultSet rs = st.executeQuery(SSQL);
-//
-//            while (rs.next()) {
-//                combo.addItem(rs.getString("CATERIN"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-//    }
-//
-//    public static void cargaComboAnioHabitacion(JComboBox combo) {
-//
-//        try {
-//            String SSQL = "SELECT DISTINCT DATE(fechaentrada) AS FECHA FROM reserva_habitacion";
-//
-//            com.mysql.jdbc.Statement st = (com.mysql.jdbc.Statement) conn.createStatement();
-//            ResultSet rs = st.executeQuery(SSQL);
-//
-//            while (rs.next()) {
-//                combo.addItem(rs.getString("FECHA"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    public static boolean registrarConsulta(Consulta c) {
+        try {
+            String consulta = "INSERT INTO consultas (dniPaciente, fechaConsulta, "
+                    + "diagnostico, tratamiento, observaciones, codigofacultativo) "
+                    + "VALUES (?,?,?,?,?,?);"; //son 6
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, c.getDniPaciente());
+            st.setObject(2, c.getFechaConsulta());
+            st.setObject(3, c.getDiagnostico());
+            st.setObject(4, c.getTratamiento());
+            st.setObject(5, c.getObservaciones());
+            st.setObject(6, c.getCodigoFacultativo());
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean registrarConsultaEnfermeria(ConsultaEnferemeria ce) {
+        try {
+            String consulta = "INSERT INTO enfermeria (dniPaciente, fechaConsulta, tensionMax, tensionMin, glucosa, peso, codigoFacultativo) "
+                    + "VALUES (?,?,?,?,?,?,?);"; //son 7
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, ce.getDniPaciente());
+            st.setObject(2, ce.getFechaConsulta());
+            st.setObject(3, ce.getMaxima());
+            st.setObject(4, ce.getMinima());
+            st.setObject(5, ce.getGlucosa());
+            st.setObject(6, ce.getPeso());
+            st.setObject(7, ce.getCodigoFacultativo());
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean registrarCitaMedica(Cita ci) {
+        try {
+            String consulta = "INSERT INTO citas (dniPaciente, nombre, dia, hora) "
+                    + "VALUES (?,?,?,?);"; //son 4
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, ci.getDniPaciente());
+            st.setObject(2, ci.getNombre());
+            st.setObject(3, ci.getDia());
+            st.setObject(4, ci.getHora());
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean registrarCitaEnfermeria(Cita ce) {
+        try {
+            String consulta = "INSERT INTO citasEnfermeria (dniPaciente, nombre, dia, hora) "
+                    + "VALUES (?,?,?,?);"; //son 4
+
+            PreparedStatement st;
+
+            st = (PreparedStatement) conn.prepareStatement(consulta);
+
+            st.setObject(1, ce.getDniPaciente());
+            st.setObject(2, ce.getNombre());
+            st.setObject(3, ce.getDia());
+            st.setObject(4, ce.getHora());
+
+            st.execute();
+            return true;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static void enviar(String asunto, String mensaje, String destinatario) {
+
+        String asu = asunto;
+        String msg = mensaje + "<p><img src=https://reynaldomd.com/firmacorreo/firmacorreo.png></p> "
+                + "<p>Has recibido este email porque has solicitado una cita en el centro médico. Por favor, no responda a este correo electrónico: ha sido generado automáticamente.</p>";
+        String des = destinatario;
+
+        UtilidadEmail uee = new UtilidadEmail(asu, msg, des);
+
+        if (uee.enviaMailHtml()) {
+            JOptionPane.showMessageDialog(null, "Correo electrónico enviado correctamente", "Envio de correo electrónico", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Ha habido un error y no se ha enviado el correo correctamente", "Envio de correo", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    public static String correoPaciente(String dniUsuario) {
+        String consulta = "SELECT email AS EMAIL FROM paciente WHERE dni = ?";
+        PreparedStatement pst;
+        ResultSet rs;
+        String correo = "";
+
+        try {
+            pst = (PreparedStatement) conn.prepareStatement(consulta);
+            pst.setString(1, dniUsuario);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                correo = rs.getString("EMAIL");
+            }
+
+            rs.close();
+            pst.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return correo;
+    }
+
 }

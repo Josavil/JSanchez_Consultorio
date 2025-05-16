@@ -82,6 +82,16 @@ public class Utilidades {
             Integer.valueOf(campo.getText());
             return true;
         } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El campo " + campo.getName() + " debe ser numérico y sin decimales.");
+            return false;
+        }
+    }
+    
+        public static boolean compruebaNumeroDouble(JTextField campo) {
+        try {
+            Double.valueOf(campo.getText());
+            return true;
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "El campo " + campo.getName() + " debe ser numérico.");
             return false;
         }

@@ -6,11 +6,14 @@ package vistas;
 
 import bbdd.Conexion;
 import java.awt.Frame;
+import java.awt.Insets;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import utilidades.Encriptado;
-import static vistas.ConsultaMedica.datosPaciente;
+import static vistas.ConsultaEnfermeria.datosPacientee;
 import static vistas.Login.datosPersonal;
 import static vistas.Login.dniPaciente;
 
@@ -213,10 +216,20 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
                 "FECHA", "MÁXIMA", "MÍNIMA", "GLUCOSA", "PESO"
             }
         ));
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabla);
 
         botonActualizarTabla.setText("ACTUALIZAR TABLA");
         botonActualizarTabla.setEnabled(false);
+        botonActualizarTabla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonActualizarTablaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -305,14 +318,15 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         if (comprobacions == true) {
             if (Conexion.existePaciente(Encriptado.encriptar(dniPaciente.toString()))) {
 
-                datosPaciente = Conexion.conseguirDatosPaciente(Encriptado.encriptar(dniPaciente.toString()));
-                campoNombre.setText(Encriptado.desencriptar(datosPaciente[0]));
-                campoApellidos.setText(Encriptado.desencriptar(datosPaciente[1]));
-                campoTelefono.setText(datosPaciente[2]);
-                campoEmail.setText(datosPaciente[3]);
+                datosPacientee = Conexion.conseguirDatosPaciente(Encriptado.encriptar(dniPaciente.toString()));
+                campoNombre.setText(Encriptado.desencriptar(datosPacientee[0]));
+                campoApellidos.setText(Encriptado.desencriptar(datosPacientee[1]));
+                campoTelefono.setText(datosPacientee[2]);
+                campoEmail.setText(datosPacientee[3]);
                 botonNuevoInforme.setEnabled(true);
                 botonNuevaCita.setEnabled(true);
                 DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                botonActualizarTabla.setEnabled(true);
 
                 Conexion.tablaAgendaCitasMedico(modelo, datosPersonal[1]);
                 Conexion.desconectar();
@@ -344,6 +358,51 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
         NuevaCitaEnfermeria ncm = new NuevaCitaEnfermeria(parent, rootPaneCheckingEnabled);
         ncm.setVisible(rootPaneCheckingEnabled);    }//GEN-LAST:event_botonNuevaCitaActionPerformed
 
+    private void botonActualizarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarTablaActionPerformed
+        Conexion.Conectar();
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        String dniTabla = Encriptado.encriptar(dniPaciente);
+        Conexion.tablaEnfermeriaConsultas(modelo, dniTabla);
+        Conexion.desconectar();    }//GEN-LAST:event_botonActualizarTablaActionPerformed
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+
+
+        int fila = tabla.getSelectedRow();
+
+        String[] informe = new String[5];
+        informe[0] = String.valueOf(tabla.getValueAt(fila, 0));
+        informe[1] = String.valueOf(tabla.getValueAt(fila, 1));
+        informe[2] = String.valueOf(tabla.getValueAt(fila, 2));
+        informe[3] = String.valueOf(tabla.getValueAt(fila, 3));
+        informe[4] = String.valueOf(tabla.getValueAt(fila, 3));
+
+
+        
+        String contenido = "FECHA DE CONSULTA: " + informe[0];
+        contenido += "\n\nMÁXIMA:\n " + informe[1];
+        contenido += "\n\nMÍNIMA:\n " + informe[2];
+        contenido += "\n\nGLUCOSA:\n " + informe[3];
+        contenido += "\n\nPESO:\n " + informe[4];
+
+        JTextArea t = new JTextArea(20, 60);
+        t.setText(contenido);
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setFocusable(false);
+        t.setAutoscrolls(true);
+        t.setMargin(new Insets(10, 10, 10, 10));
+
+        JOptionPane.showMessageDialog(this, new JScrollPane(t), "INFORME", 1);
+
+
+
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaMouseClicked
+//fecha maxima minima glucosa peso
     /**
      * @param args the command line arguments
      */
@@ -413,6 +472,6 @@ public class ConsultaEnfermeria extends javax.swing.JDialog {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
-    public static String[] datosPaciente;
+    public static String[] datosPacientee;
 
 }

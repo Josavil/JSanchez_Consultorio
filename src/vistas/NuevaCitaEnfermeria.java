@@ -4,9 +4,14 @@
  */
 package vistas;
 
+import bbdd.Conexion;
+import java.util.Date;
+import modelo.Cita;
 import utilidades.Encriptado;
+import static vistas.ConsultaEnfermeria.datosPacientee;
 import static vistas.ConsultaMedica.datosPaciente;
 import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
 
 /**
  *
@@ -21,7 +26,7 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         campoDni.setText(dniPaciente);
-        campoNombreApellidos.setText(Encriptado.desencriptar(datosPaciente[1]) + Encriptado.desencriptar(datosPaciente[2]));
+        campoNombreApellidos.setText(Encriptado.desencriptar(datosPacientee[0]) + Encriptado.desencriptar(datosPacientee[1]));
 
     }
 
@@ -36,7 +41,7 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         campoDni = new javax.swing.JTextField();
         botonGuardar = new javax.swing.JButton();
@@ -64,10 +69,11 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 650));
+        setMaximumSize(new java.awt.Dimension(600, 465));
+        setMinimumSize(new java.awt.Dimension(600, 465));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        panel.setBackground(new java.awt.Color(0, 204, 204));
 
         jLabel3.setText("DNI PACIENTE");
 
@@ -88,7 +94,7 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
 
         jLabel10.setText("FECHA");
 
-        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione" }));
+        comboHora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24" }));
         comboHora.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboHoraActionPerformed(evt);
@@ -102,58 +108,58 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(196, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addContainerGap(202, Short.MAX_VALUE)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
                             .addComponent(jLabel9))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboHora, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelLayout.createSequentialGroup()
                         .addGap(97, 97, 97)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(campoDni)
                             .addComponent(campoNombreApellidos))))
                 .addGap(61, 61, 61))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(177, 177, 177)
                 .addComponent(botonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(campoNombreApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel10)
                         .addComponent(comboFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(56, 56, 56)
                 .addComponent(botonGuardar)
                 .addGap(63, 63, 63))
         );
@@ -178,7 +184,7 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -192,19 +198,15 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -212,6 +214,57 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
+
+        //HACER LA CONSULTA DE GUARDAR LA CITA
+        //
+        //DNI PACIENTE Y NOMBRE Y APELLIDOS YA LO TENEMOS
+        //LA FECHA DEBES PONER EL DIA DE HOY Y MODIFICARLA SEGUN LO QUE PONGA EN EL COMBO
+        //LA HORA SE DEBE GUARDAR CÓMO UN int
+        //
+        //
+        //
+        if (utilidades.Utilidades.compruebaCamposVacios(panel)) {
+//Una semana
+//Dos semanas
+//Un mes
+            Date diaCita = new Date();
+            if (comboFecha.getSelectedIndex() == 1) {
+                diaCita = new Date(hoy.getTime() + 7 * 24 * 60 * 60 * 1000L);
+            }
+            if (comboFecha.getSelectedIndex() == 2) {
+                diaCita = new Date(hoy.getTime() + 14 * 24 * 60 * 60 * 1000L);
+            }
+            if (comboFecha.getSelectedIndex() == 3) {
+                diaCita = new Date(hoy.getTime() + 30 * 24 * 60 * 60 * 1000L);
+            }
+
+            String dniEn = Encriptado.encriptar(dniPaciente);
+            String nom = datosPacientee[0];
+            Date dia = diaCita;
+            int hor = comboHora.getSelectedIndex();
+            String horStrin = Integer.toString(hor);
+
+            Cita ci = new Cita(dniEn, nom, dia, hor);
+
+            Conexion.Conectar();
+            Conexion.registrarCitaMedica(ci);
+            Conexion.desconectar();
+
+            String asunto = "Cita enfermería";
+            String mensaje = "<h2>--------------Datos de la cita--------------</h2>\n"
+                    + " <p>Dni del paciente: " + dniPaciente + " </p>\n"
+                    + "        <p>Nombre: " + Encriptado.desencriptar(datosPacientee[0]) + Encriptado.desencriptar(datosPacientee[1]) + " </p>\n"
+                    + "        <p>Día: " + dia.toString() + " </p>\n"
+                    + "        <p>Hora: " + horStrin + " </p>";
+
+            
+            Conexion.Conectar();
+            String destinatario = Conexion.correoPaciente(Encriptado.encriptar(dniPaciente));
+
+            Conexion.enviar(asunto, mensaje, destinatario);
+            Conexion.desconectar();
+            
+        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGuardarActionPerformed
@@ -293,9 +346,9 @@ public class NuevaCitaEnfermeria extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

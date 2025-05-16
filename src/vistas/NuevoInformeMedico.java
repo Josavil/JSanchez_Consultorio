@@ -4,8 +4,14 @@
  */
 package vistas;
 
+import bbdd.Conexion;
 import static java.lang.System.exit;
+import javax.swing.JOptionPane;
+import modelo.Consulta;
+import utilidades.Encriptado;
+import static vistas.Login.datosPersonal;
 import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
 
 /**
  *
@@ -65,9 +71,8 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 650));
-        setMinimumSize(new java.awt.Dimension(1000, 650));
-        setPreferredSize(new java.awt.Dimension(1000, 650));
+        setMaximumSize(new java.awt.Dimension(1000, 651));
+        setMinimumSize(new java.awt.Dimension(1000, 651));
         setResizable(false);
 
         panel.setBackground(new java.awt.Color(0, 204, 204));
@@ -216,13 +221,38 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        utilidades.Utilidades.compruebaCamposVacios(panel);
+        if (utilidades.Utilidades.compruebaCamposVacios(panel)) {
+            Conexion.Conectar();
+
+            String dni = Encriptado.encriptar(dniPaciente);
+            java.util.Date fechoy = hoy;
+            String dia = campoDiagnostico.getText();
+            String tra = campoTratamiento.getText();
+            String obs = campoObservaciones.getText();
+            int codF = Integer.parseInt(datosPersonal[1]);
+
+            Consulta c = new Consulta(dni, fechoy, dia, tra, obs, codF);
+
+            if (Conexion.registrarConsulta(c)) {
+                JOptionPane.showMessageDialog(this, "Consulta registrada correctamente.");
+                Conexion.desconectar();
+                utilidades.Utilidades.reseteaFormulario(panel);
+                this.dispose();
+            } else {
+                Conexion.desconectar();
+                JOptionPane.showMessageDialog(this, "Error en el guardado, intentelo de nuevo.");
+            }
+        }
+
+        Conexion.desconectar();
+
         // TODO add your handling code here:
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        exit(0);
-        // TODO add your handling code here:
+
+        this.dispose();
+
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
@@ -239,16 +269,24 @@ public class NuevoInformeMedico extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuevoInformeMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevoInformeMedico.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuevoInformeMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevoInformeMedico.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuevoInformeMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevoInformeMedico.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuevoInformeMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuevoInformeMedico.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

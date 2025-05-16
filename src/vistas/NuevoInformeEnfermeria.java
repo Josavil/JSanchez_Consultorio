@@ -4,7 +4,16 @@
  */
 package vistas;
 
+import bbdd.Conexion;
 import static java.lang.System.exit;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import modelo.Consulta;
+import modelo.ConsultaEnferemeria;
+import utilidades.Encriptado;
+import static vistas.Login.datosPersonal;
+import static vistas.Login.dniPaciente;
+import static vistas.MenuPrincipal.hoy;
 
 /**
  *
@@ -18,6 +27,7 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
     public NuevoInformeEnfermeria(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        campoDniPaciente.setText(dniPaciente);
     }
 
     /**
@@ -72,6 +82,8 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
 
         jLabel3.setText("DNI PACIENTE");
 
+        campoDniPaciente.setEnabled(false);
+
         botonGuardar.setText("GUARDAR");
         botonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +103,10 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
         jLabel4.setText("MÁXIMA");
 
         jLabel5.setText("MÍNIMA");
+
+        campoMaxima.setName("MÁXIMA"); // NOI18N
+
+        campoMinima.setName("MÍNIMA"); // NOI18N
 
         javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
         panel1.setLayout(panel1Layout);
@@ -132,6 +148,8 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
 
         jLabel6.setText("NIVEL DE GLUCOSA");
 
+        campoNivelGlucosa.setName("NIVEL DE GLUCOSA"); // NOI18N
+
         javax.swing.GroupLayout panel2Layout = new javax.swing.GroupLayout(panel2);
         panel2.setLayout(panel2Layout);
         panel2Layout.setHorizontalGroup(
@@ -155,6 +173,8 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
         panel3.setBorder(javax.swing.BorderFactory.createTitledBorder("PESO"));
 
         jLabel7.setText("PESO");
+
+        campoPeso.setName("PESO"); // NOI18N
 
         javax.swing.GroupLayout panel3Layout = new javax.swing.GroupLayout(panel3);
         panel3.setLayout(panel3Layout);
@@ -279,15 +299,46 @@ public class NuevoInformeEnfermeria extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
-        utilidades.Utilidades.compruebaCamposVacios(panel1);
-        utilidades.Utilidades.compruebaCamposVacios(panel2);
-        utilidades.Utilidades.compruebaCamposVacios(panel3);
 
-        // TODO add your handling code here:
+        if (utilidades.Utilidades.compruebaCamposVacios(panel1)
+                && utilidades.Utilidades.compruebaNumeroDouble(campoMaxima)
+                && utilidades.Utilidades.compruebaNumeroDouble(campoMinima)
+                && utilidades.Utilidades.compruebaCamposVacios(panel2)
+                && utilidades.Utilidades.compruebaNumeroEntero(campoNivelGlucosa)
+                && utilidades.Utilidades.compruebaCamposVacios(panel3)
+                && utilidades.Utilidades.compruebaNumeroDouble(campoPeso)) {
+
+            Conexion.Conectar();
+
+            String dni = Encriptado.encriptar(dniPaciente);
+            java.util.Date fechoy = hoy;
+            Double max = Double.parseDouble(campoMaxima.getText());
+            Double min = Double.parseDouble(campoMinima.getText());
+            int glu = Integer.parseInt(campoNivelGlucosa.getText());
+            Double pes = Double.parseDouble(campoPeso.getText());
+            int codF = Integer.parseInt(datosPersonal[1]);
+
+            ConsultaEnferemeria ce = new ConsultaEnferemeria(dni, fechoy, max, min, glu, pes, codF);
+            if (Conexion.registrarConsultaEnfermeria(ce)) {
+                JOptionPane.showMessageDialog(this, "Consulta registrada correctamente.");
+                Conexion.desconectar();
+                utilidades.Utilidades.reseteaFormulario(panel1);
+                utilidades.Utilidades.reseteaFormulario(panel2);
+                utilidades.Utilidades.reseteaFormulario(panel3);
+                this.dispose();
+            } else {
+                Conexion.desconectar();
+                JOptionPane.showMessageDialog(this, "Error en el guardado, intentelo de nuevo.");
+            }
+        }
+
+        Conexion.desconectar();
+
+
     }//GEN-LAST:event_botonGuardarActionPerformed
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        exit(0);        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
